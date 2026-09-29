@@ -4,6 +4,8 @@ import com.clinicmanager.model.enums.Gender;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "patients")
@@ -21,6 +23,8 @@ public class Patient extends User {
 
     private String bloodGroup;
 
+    @OneToMany(mappedBy = "patient")
+    private List<Appointment> appointments = new ArrayList<>();
     public Patient() {
     }
 
@@ -62,5 +66,13 @@ public class Patient extends User {
 
     public void setBloodGroup(String bloodGroup) {
         this.bloodGroup = bloodGroup;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }

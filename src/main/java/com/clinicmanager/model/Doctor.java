@@ -2,7 +2,8 @@ package com.clinicmanager.model;
 
 import jakarta.persistence.*;
 
-import java.util.stream.StreamSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "doctors")
@@ -17,7 +18,13 @@ public class Doctor extends User {
     @JoinColumn(name = "specialty_id", nullable = false)
     private Specialty specialty;
 
-    private String department;
+    @OneToMany(
+            mappedBy = "doctor",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Availability> availabilities = new ArrayList<>();
+
 
     public Doctor() {
     }
@@ -46,11 +53,14 @@ public class Doctor extends User {
         this.specialty = specialty;
     }
 
-    public String getDepartment() {
-        return department;
+    public List<Availability> getAvailabilities() {
+        return availabilities;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setAvailabilities(List<Availability> availabilities) {
+        this.availabilities = availabilities;
     }
+
+
+
 }
