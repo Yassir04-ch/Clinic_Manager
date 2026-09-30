@@ -25,6 +25,9 @@ public class Doctor extends User {
     )
     private List<Availability> availabilities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "doctor")
+    private List<Appointment> appointments;
+
 
     public Doctor() {
     }
@@ -61,6 +64,11 @@ public class Doctor extends User {
         this.availabilities = availabilities;
     }
 
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
 
-
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
 }
