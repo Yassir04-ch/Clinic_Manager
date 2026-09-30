@@ -4,6 +4,7 @@ import com.clinicmanager.config.JPAConfig;
 import com.clinicmanager.model.User;
 import com.clinicmanager.repository.JpaUserRepository;
 import com.clinicmanager.repository.UserRepository;
+import com.clinicmanager.utils.PasswordUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -15,6 +16,10 @@ public class UserService {
     }
 
     public void createUser(User user){
+        String hashedPassword = PasswordUtil.hashPassword(user.getPassword());
+
+        user.setPassword(hashedPassword);
+
         EntityManager entityManager = this.factory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
