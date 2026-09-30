@@ -1,6 +1,7 @@
 package com.clinicmanager.service;
 
 import com.clinicmanager.config.JPAConfig;
+import com.clinicmanager.exception.InvalidCredentialsException;
 import com.clinicmanager.model.User;
 import com.clinicmanager.repository.JpaUserRepository;
 import com.clinicmanager.repository.UserRepository;
@@ -31,6 +32,23 @@ public class UserService {
                 entityManager.getTransaction().rollback();
             }
             throw e;
+        }finally {
+            entityManager.close();
+        }
+    }
+
+    public User login(String email ,String password ){
+        EntityManager entityManager = this.factory.createEntityManager();
+        try{
+            UserRepository repository = new JpaUserRepository(entityManager);
+            User user = repository.findByEmail(email);
+            if(user == null){
+                throw new InvalidCredentialsException("Email incorrect");
+            }
+            if(!PasswordUtil.checkPassword(password, user.getPassword())){
+                throw new InvalidCredentialsException("password incorrect");
+            }
+            return user;
         }finally {
             entityManager.close();
         }

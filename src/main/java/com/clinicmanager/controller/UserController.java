@@ -29,12 +29,14 @@ public class UserController extends HttpServlet {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setPassword(password);
+        user.setPhone(phone);
         user.setEmail(email);
         user.setPassword(password);
         user.setRole(Role.PATIENT);
         this.userService.createUser(user);
-        response.sendRedirect(request.getContextPath() + "/users");
+        response.sendRedirect(request.getContextPath() + "/test.jsp");
     }
+
 
 
 
