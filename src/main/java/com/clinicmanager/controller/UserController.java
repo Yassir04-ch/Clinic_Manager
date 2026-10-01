@@ -13,7 +13,14 @@ import java.io.IOException;
 
 @WebServlet("/users/create")
 public class UserController extends HttpServlet {
+
     private final UserService userService = new UserService();
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.getRequestDispatcher("/register.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

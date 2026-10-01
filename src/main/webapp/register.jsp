@@ -11,26 +11,25 @@
 
 <h1>Create Account</h1>
 
-<form action="${pageContext.request.contextPath}/users/create"
-      method="post">
+<form action="${pageContext.request.contextPath}/users/create" method="post">
 
     <div>
         <label for="firstName">First Name:</label>
-        <input type="text"id="firstName"name="firstName"required>
+        <input type="text" id="firstName" name="firstName" required>
     </div>
 
     <br>
 
     <div>
         <label for="lastName">Last Name:</label>
-        <input type="text"id="lastName"name="lastName"required>
+        <input type="text" id="lastName" name="lastName" required>
     </div>
 
     <br>
 
      <div>
             <label for="phone">Phone:</label>
-            <input type="text"id="phone"name="phone"required>
+            <input type="text" id="phone" name="phone" required>
         </div>
 
     <br>
