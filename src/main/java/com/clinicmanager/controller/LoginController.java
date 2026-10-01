@@ -1,7 +1,8 @@
-package com.clinicmanager.repository;
+package com.clinicmanager.controller;
 
 import com.clinicmanager.exception.InvalidCredentialsException;
 import com.clinicmanager.model.User;
+import com.clinicmanager.model.enums.Role;
 import com.clinicmanager.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,7 +22,7 @@ public class LoginController extends HttpServlet {
                          HttpServletResponse response)
             throws ServletException, IOException {
 
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        request.getRequestDispatcher("/auth/login.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -33,11 +34,18 @@ public class LoginController extends HttpServlet {
             User user = this.userService.login(email, password);
             HttpSession session = request.getSession();
             session.setAttribute("user",user);
-            response.sendRedirect(request.getContextPath() + "/test.jsp");
-
+            if (user.getRole() == Role.ADMIN) {
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin");
+            } else if (user.getRole() == Role.PATIENT) {
+                response.sendRedirect(request.getContextPath() + "/dashboard/patient");
+            } else if (user.getRole() == Role.DOCTOR) {
+                response.sendRedirect(request.getContextPath() + "/dashboard/doctor");
+            }  else if (user.getRole() == Role.STAFF) {
+                response.sendRedirect(request.getContextPath() + "/dashboard/staff");
+            }
         }catch (InvalidCredentialsException e){
             request.setAttribute("erreur",e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
         }
 
     }

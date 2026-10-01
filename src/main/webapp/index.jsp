@@ -1,13 +1,24 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>JSP - Hello World</title>
+    <meta charset="UTF-8">
+    <title>ClinicManager</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
+
+<h1>Bienvenue dans ClinicManager</h1>
+
+<p>Gestion de la clinique</p>
+
+<a href="${pageContext.request.contextPath}/users/login">
+    Se connecter
+</a>
+
+<br><br>
+
+<a href="${pageContext.request.contextPath}/users/create">
+    Creer un compte
+</a>
+
 </body>
 </html>

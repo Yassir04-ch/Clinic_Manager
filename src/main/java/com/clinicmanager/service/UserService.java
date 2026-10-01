@@ -53,4 +53,22 @@ public class UserService {
             entityManager.close();
         }
     }
+
+    public void updateProfile(User user){
+        EntityManager entityManager = factory.createEntityManager();
+        try{
+            entityManager.getTransaction().begin();
+            JpaUserRepository userRepository = new JpaUserRepository(entityManager);
+            userRepository.update(user);
+            entityManager.getTransaction().commit();
+        }catch (Exception e){
+            if(entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().rollback();
+            }
+            throw e;
+        }finally {
+            entityManager.close();
+        }
+    }
+
 }

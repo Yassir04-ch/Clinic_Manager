@@ -32,4 +32,9 @@ public class JpaUserRepository implements UserRepository {
         query.setParameter("email", email);
         return query.getResultStream().findFirst().orElse(null);
     }
+
+    @Override
+    public void update(User user){
+        entityManager.merge(user);
+    }
 }
