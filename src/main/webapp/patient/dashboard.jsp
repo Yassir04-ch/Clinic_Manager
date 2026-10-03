@@ -20,5 +20,10 @@
   Profile
 </a>
 
+
+<a href="${pageContext.request.contextPath}/users/logout">
+  LogOut
+</a>
+
 </body>
 </html>

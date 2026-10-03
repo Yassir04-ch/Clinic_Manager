@@ -8,17 +8,29 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebServlet("/users/create")
+@WebServlet({"/users/create", "/users/logout"})
+
 public class UserController extends HttpServlet {
 
     private final UserService userService = new UserService();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
+        String servletPath = request.getServletPath();
+        if("/users/create".equals(servletPath)){
+            request.getRequestDispatcher("/auth/register.jsp").forward(request, response);
+        }else if("/users/logout".equals(servletPath)){
+            HttpSession session = request.getSession(false);
+            if(session != null){
+                session.invalidate();
+            }
+            response.sendRedirect(request.getContextPath() + "/users/login");
+        }
+
     }
 
     @Override
