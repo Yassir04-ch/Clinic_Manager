@@ -29,7 +29,7 @@ public class SpecialtyController extends HttpServlet {
             List<Department> departments = departmentService.findAll();
 
             request.setAttribute("departments", departments);
-            request.getRequestDispatcher("/WEB-INF/views/specialties/create.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/specialities/create.jsp").forward(request, response);
         }else if (path != null && path.startsWith("/update/")) {
 
             String idPath = path.substring("/update/".length());
@@ -40,12 +40,12 @@ public class SpecialtyController extends HttpServlet {
 
             request.setAttribute("specialty", specialty);
             request.setAttribute("departments", departments);
-            request.getRequestDispatcher("/WEB-INF/views/specialties/update.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/specialities/update.jsp").forward(request, response);
         }
         else if (path == null || "/".equals(path)) {
             List<Specialty> specialties = specialtyService.findAll();
             request.setAttribute("specialties", specialties);
-            request.getRequestDispatcher("/WEB-INF/views/specialties/list.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/specialities/listspeciality.jsp").forward(request, response);
         }
         else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Page not found");
