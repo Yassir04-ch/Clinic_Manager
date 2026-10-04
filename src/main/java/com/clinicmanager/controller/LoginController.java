@@ -45,7 +45,7 @@ public class LoginController extends HttpServlet {
             }
         }catch (InvalidCredentialsException e){
             request.setAttribute("erreur",e.getMessage());
-            request.getRequestDispatcher("/WEB-INF/views/auth/login.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/users/login");
         }
 
     }

@@ -21,20 +21,27 @@ public class DepartmentController extends HttpServlet {
         throws ServletException , IOException
     {
         String path = request.getPathInfo();
+
+        System.out.println("================================");
+        System.out.println("REQUEST URI  = " + request.getRequestURI());
+        System.out.println("CONTEXT PATH = " + request.getContextPath());
+        System.out.println("SERVLET PATH = " + request.getServletPath());
+        System.out.println("PATH INFO    = " + request.getPathInfo());
+        System.out.println("================================");
         if("/create".equals(path)){
-            request.getRequestDispatcher("/departments/create.jsp").forward(request , response);
+            request.getRequestDispatcher("/WEB-INF/views/departments/create.jsp"
+                                        ).forward(request, response);
         }else if(path != null && path.startsWith("/update/")){
             String idPath  = path.substring("/update/".length());
             UUID id = UUID.fromString(idPath);
             Department department =this.departmentService.findById(id);
             request.setAttribute("department" , department);
-
-            request.getRequestDispatcher("/departments/update.jsp").forward(request , response);
-
+            request.getRequestDispatcher("/WEB-INF/views/departments/update.jsp"
+                                        ).forward(request, response);
         }else if (path == null  || "/".equals(path)) {
             request.setAttribute("departments", departmentService.findAll());
-            request.getRequestDispatcher("/departments/dashboard.jsp").forward(request, response);
-
+            request.getRequestDispatcher("/WEB-INF/views/departments/listdepartment.jsp"
+                                        ).forward(request, response);
         }else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Page not found");
         }
@@ -56,7 +63,20 @@ public class DepartmentController extends HttpServlet {
             department.setDescription(description);
             departmentService.createDepartment(department);
             response.sendRedirect(request.getContextPath() + "/departments");
-        } else {
+        }else if("/update".equals(path)){
+
+
+            String idinfo = request.getParameter("id");
+            UUID id = UUID.fromString(idinfo);
+            String name = request.getParameter("name");
+            String description = request.getParameter("description");
+
+            Department department = departmentService.findById(id);
+            department.setName(name);
+            department.setDescription(description);
+            departmentService.updateDepartment(department);
+            response.sendRedirect(request.getContextPath() + "/departments");
+        }else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Page not found");
         }
     }

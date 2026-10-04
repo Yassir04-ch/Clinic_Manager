@@ -11,10 +11,13 @@
 
 <h1>Update Department</h1>
 
-<form action="${pageContext.request.contextPath}/departments/update/${department.id}"
+<form action="${pageContext.request.contextPath}/departments/update"
       method="post">
 
-  <div>
+<div>
+
+  <input type="hidden" name="id" value="${department.id}">
+
     <label for="name">Department Name:</label>
 
     <input
