@@ -3,7 +3,7 @@ package com.clinicmanager.service;
 import com.clinicmanager.config.JPAConfig;
 import com.clinicmanager.exception.InvalidCredentialsException;
 import com.clinicmanager.model.User;
-import com.clinicmanager.repository.JpaUserRepository;
+import com.clinicmanager.repository.jpa.JpaUserRepository;
 import com.clinicmanager.repository.UserRepository;
 import com.clinicmanager.utils.PasswordUtil;
 import jakarta.persistence.EntityManager;

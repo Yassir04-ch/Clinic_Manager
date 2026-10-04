@@ -1,7 +1,7 @@
-package com.clinicmanager.repository;
+package com.clinicmanager.repository.jpa;
 
-import com.clinicmanager.config.JPAConfig;
 import com.clinicmanager.model.User;
+import com.clinicmanager.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 

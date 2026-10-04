@@ -17,11 +17,7 @@ public class Department {
     private String name;
     private String description;
 
-    @OneToMany(
-            mappedBy = "department",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Specialty> specialties = new ArrayList<>();
 
     public Department() {

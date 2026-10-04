@@ -22,9 +22,7 @@ public class DashboardController extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if (session == null) {
-            response.sendRedirect(
-                    request.getContextPath() + "/users/login"
-            );
+            response.sendRedirect(request.getContextPath() + "/users/login");
             return;
         }
 
