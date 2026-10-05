@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +14,6 @@
 <form action="${pageContext.request.contextPath}/users/create" method="post">
 
     <input type="hidden" name="role" value="DOCTOR">
-
 
     <div>
         <label>First Name:</label>
@@ -51,7 +50,6 @@
 
     <br>
 
-
     <div>
         <label>Matricule:</label>
         <input type="text" name="matricule" required>
@@ -73,17 +71,13 @@
 
             <option value="">-- Select Specialty --</option>
 
-            <option value="SPECIALTY_UUID_1">
-                Cardiology
-            </option>
+            <c:forEach var="specialty" items="${specialities}">
 
-            <option value="SPECIALTY_UUID_2">
-                Dermatology
-            </option>
+                <option value="${specialty.id}">
+                        ${specialty.name}
+                </option>
 
-            <option value="SPECIALTY_UUID_3">
-                Pediatrics
-            </option>
+            </c:forEach>
 
         </select>
     </div>

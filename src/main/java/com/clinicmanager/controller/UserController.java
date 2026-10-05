@@ -2,9 +2,11 @@ package com.clinicmanager.controller;
 
 import com.clinicmanager.model.Doctor;
 import com.clinicmanager.model.Patient;
+import com.clinicmanager.model.Specialty;
 import com.clinicmanager.model.User;
 import com.clinicmanager.model.enums.Gender;
 import com.clinicmanager.model.enums.Role;
+import com.clinicmanager.service.SpecialtyService;
 import com.clinicmanager.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,12 +17,15 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 
 @WebServlet({"/users/create/*", "/users/logout"})
 
 public class UserController extends HttpServlet {
 
     private final UserService userService = new UserService();
+    private  final SpecialtyService specialtyService = new SpecialtyService();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,6 +45,8 @@ public class UserController extends HttpServlet {
                     request.getRequestDispatcher("/auth/create_patient.jsp").forward(request, response);
                     break;
                 case "/doctor":
+                    List<Specialty> specialties = new SpecialtyService().findAll();
+                    request.setAttribute("specialities",specialties);
                     request.getRequestDispatcher("/auth/create_doctor.jsp").forward(request, response);
                     break;
                 case "/user":
@@ -119,6 +126,8 @@ public class UserController extends HttpServlet {
 
         } else if (role == Role.DOCTOR) {
 
+            String specialtyId = request.getParameter("specialtyId");
+            UUID speId = UUID.fromString(specialtyId);
             Doctor doctor = new Doctor();
             doctor.setFirstName(firstName);
             doctor.setLastName(lastName);
@@ -127,6 +136,9 @@ public class UserController extends HttpServlet {
             doctor.setPassword(password);
             doctor.setRole(Role.DOCTOR);
             doctor.setActive(true);
+
+            Specialty specialty = specialtyService.findById(speId);
+            doctor.setSpecialty(specialty);
 
             String matricule = request.getParameter("matricule");
             String title = request.getParameter("title");

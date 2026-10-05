@@ -3,6 +3,7 @@ package com.clinicmanager.model;
 import com.clinicmanager.model.enums.AvailabilityStatus;
 import jakarta.persistence.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -15,17 +16,22 @@ public class Availability {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
-    private LocalDate date;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DayOfWeek dayOfWeek;
 
+    @Column(nullable = false)
     private LocalTime startTime;
 
+    @Column(nullable = false)
     private LocalTime endTime;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private AvailabilityStatus status;
 
     private LocalDate validFrom;
@@ -35,12 +41,18 @@ public class Availability {
     public Availability() {
     }
 
-    public UUID getId() {
-        return id;
+    public Availability(Doctor doctor, DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime, AvailabilityStatus status, LocalDate validFrom, LocalDate validTo) {
+        this.doctor = doctor;
+        this.dayOfWeek = dayOfWeek;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+        this.validFrom = validFrom;
+        this.validTo = validTo;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public UUID getId() {
+        return id;
     }
 
     public Doctor getDoctor() {
@@ -51,12 +63,12 @@ public class Availability {
         this.doctor = doctor;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public DayOfWeek getDayOfWeek() {
+        return dayOfWeek;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 
     public LocalTime getStartTime() {
