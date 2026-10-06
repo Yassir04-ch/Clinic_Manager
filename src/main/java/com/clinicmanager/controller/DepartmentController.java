@@ -23,8 +23,10 @@ public class DepartmentController extends HttpServlet {
         String path = request.getPathInfo();
 
         if("/create".equals(path)){
+
             request.getRequestDispatcher("/WEB-INF/views/departments/create.jsp"
                                         ).forward(request, response);
+
         }else if(path != null && path.startsWith("/update/")){
             String idPath  = path.substring("/update/".length());
             UUID id = UUID.fromString(idPath);
@@ -58,7 +60,6 @@ public class DepartmentController extends HttpServlet {
             departmentService.createDepartment(department);
             response.sendRedirect(request.getContextPath() + "/departments");
         }else if("/update".equals(path)){
-
 
             String idinfo = request.getParameter("id");
             UUID id = UUID.fromString(idinfo);

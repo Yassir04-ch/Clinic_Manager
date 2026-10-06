@@ -155,12 +155,13 @@ public class UserController extends HttpServlet {
             staff.setPhone(phone);
             staff.setEmail(email);
             staff.setPassword(password);
-            staff.setRole(Role.DOCTOR);
+            staff.setRole(Role.STAFF);
             staff.setActive(true);
+            user = staff;
         }
         userService.createUser(user);
 
-        response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
+        response.sendRedirect(request.getContextPath() + "/dashboard/admin");
     }
 
 

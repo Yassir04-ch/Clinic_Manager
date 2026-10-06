@@ -6,36 +6,59 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 
-@WebFilter({"/admin/*", "/patient/*"})
+@WebFilter({"/dashboard/*", "/users/create/*" , "/appointments/*" , "/availabilities/*","/departments/*","/specialties/*"})
 public class RoleFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request , ServletResponse response , FilterChain chain)
-        throws ServletException , IOException
-    {
+        throws ServletException , IOException {
 
-        HttpServletRequest httpRequest =(HttpServletRequest) request;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        HttpServletResponse httpResponse =(HttpServletResponse) response;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        User user =(User) httpRequest.getSession().getAttribute("user");
+        User user = (User) httpRequest.getSession().getAttribute("user");
 
-        String path = httpRequest.getRequestURI();
-        if(path.contains("/admin")){
-            if(user != null && user.getRole() == Role.ADMIN){
-                chain.doFilter(request,response);
-                return;
-            }
-        }else if(path.contains("patient")){
-            if(user != null && user.getRole() == Role.PATIENT){
-                chain.doFilter(request , response);
+        String path = httpRequest.getPathInfo();
+        String pathServ = httpRequest.getServletPath();
+        if ("/admin".equals(path) || "/users/create".equals(pathServ)) {
+            if (user != null && user.getRole() == Role.ADMIN) {
+                chain.doFilter(request, response);
                 return;
             }
         }
+        if ("/patient".equals(path) || "/appointments".equals(pathServ)) {
+            if (user != null && user.getRole() == Role.PATIENT) {
+                chain.doFilter(request, response);
+                return;
+            }
+        }
+        if ("/availabilities".equals(pathServ)) {
+            if ("/create".equals(path) || (path != null && path.startsWith("/update/")) || (path != null && path.startsWith("/delete/"))) {
+                if (user != null && user.getRole() == Role.DOCTOR) {
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
+        }
+        if ("/departments".equals(pathServ)) {
+            if ("/create".equals(path) || (path != null && path.startsWith("/update/")) {
+                if (user != null && user.getRole() == Role.ADMIN) {
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
+        }
+        if ("/specialties".equals(pathServ)) {
+            if ("/create".equals(path) ||  (path != null && path.startsWith("/update/")) {
+                if (user != null && user.getRole() == Role.ADMIN) {
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
+        }
         httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
+      }
     }
-}

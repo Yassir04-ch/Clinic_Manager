@@ -32,14 +32,11 @@ public class AppointmentController extends HttpServlet {
         HttpSession session = request.getSession();
         Patient patient =(Patient) session.getAttribute("user");
 
-        if(patient == null ){
-            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
-            return;
-        }
         if(patient.getRole() != Role.PATIENT){
             response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
             return;
         }
+
         if("/create".equals(path)){
             request.getRequestDispatcher("/WEB-INF/views/appointments/create.jsp").forward(request, response);
         } else if (path !=null && path.startsWith("/update/")) {
@@ -64,32 +61,16 @@ public class AppointmentController extends HttpServlet {
         HttpSession session = request.getSession();
         String path = request.getPathInfo();
         Patient patient = (Patient) session.getAttribute("user");
-        if(patient == null){
-            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
-            return;
-        }
-        if(patient.getRole() != Role.PATIENT){
-            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
-            return;
-        }
         if("/create".equals(path)){
               try{
 
-                  UUID doctorId = UUID.fromString(
-                          request.getParameter("doctorId")
-                  );
+                  UUID doctorId = UUID.fromString(request.getParameter("doctorId"));
 
-                  LocalDate date = LocalDate.parse(
-                          request.getParameter("date")
-                  );
+                  LocalDate date = LocalDate.parse(request.getParameter("date"));
 
-                  LocalTime startTime = LocalTime.parse(
-                          request.getParameter("startTime")
-                  );
+                  LocalTime startTime = LocalTime.parse(request.getParameter("startTime"));
 
-                  LocalTime endTime = LocalTime.parse(
-                          request.getParameter("endTime")
-                  );
+                  LocalTime endTime = LocalTime.parse(request.getParameter("endTime"));
 
                   AppointmentType type = AppointmentType.valueOf(request.getParameter("type"));
 
