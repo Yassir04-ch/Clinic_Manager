@@ -22,12 +22,6 @@ public class DepartmentController extends HttpServlet {
     {
         String path = request.getPathInfo();
 
-        System.out.println("================================");
-        System.out.println("REQUEST URI  = " + request.getRequestURI());
-        System.out.println("CONTEXT PATH = " + request.getContextPath());
-        System.out.println("SERVLET PATH = " + request.getServletPath());
-        System.out.println("PATH INFO    = " + request.getPathInfo());
-        System.out.println("================================");
         if("/create".equals(path)){
             request.getRequestDispatcher("/WEB-INF/views/departments/create.jsp"
                                         ).forward(request, response);
