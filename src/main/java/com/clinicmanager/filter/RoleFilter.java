@@ -43,22 +43,15 @@ public class RoleFilter implements Filter {
                 }
             }
         }
-        if ("/departments".equals(pathServ)) {
-            if ("/create".equals(path) || (path != null && path.startsWith("/update/")) {
+        if ("/departments".equals(pathServ) || "/specialties".equals(pathServ)) {
+            if ("/create".equals(path) || (path != null && path.startsWith("/update/"))) {
                 if (user != null && user.getRole() == Role.ADMIN) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
         }
-        if ("/specialties".equals(pathServ)) {
-            if ("/create".equals(path) ||  (path != null && path.startsWith("/update/")) {
-                if (user != null && user.getRole() == Role.ADMIN) {
-                    chain.doFilter(request, response);
-                    return;
-                }
-            }
-        }
+
         httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
       }
     }
