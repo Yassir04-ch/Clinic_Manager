@@ -4,6 +4,9 @@ import com.clinicmanager.model.Appointment;
 import com.clinicmanager.repository.AppointmentRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,5 +50,16 @@ public class JpaAppointmentRepository implements AppointmentRepository {
     @Override
     public void delete(Appointment appointment) {
         entityManager.remove(appointment);
+    }
+
+    @Override
+    public boolean checkAppointment(UUID doctorId, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT count(a.id) FROM Appointment a WHERE a.doctor.id = :id " +
+                "AND a.date = :date AND a.startTime < :and AND a.endTime > :start",Long.class);
+        query.setParameter("id",doctorId);
+        query.setParameter("date",date);
+        query.setParameter("and",endTime);
+        query.setParameter("start",startTime);
+        return query.getSingleResult() > 0;
     }
 }

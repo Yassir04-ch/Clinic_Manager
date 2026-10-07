@@ -5,6 +5,8 @@ import com.clinicmanager.repository.AvailabilityRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,5 +44,15 @@ public class JpaAvailabilityRepository implements AvailabilityRepository {
     @Override
     public void delete(Availability availability) {
         entityManager.remove(availability);
+    }
+
+    @Override
+    public boolean isDoctorAvailable(UUID doctorId, LocalDate date, LocalTime startTime, LocalTime endTime){
+        TypedQuery<Long> query = entityManager.createQuery("SELECT a FROM Availability a WHERE a.doctor.id = :id" +
+                " AND a.dayOfWeek =:dayOfweek AND a.validFrom <= :start AND a.validTo >= :end",Long.class);
+        query.setParameter("id",doctorId);
+        query.setParameter("start",startTime);
+        query.setParameter("end",endTime);
+        return query.getSingleResult() > 0;
     }
 }

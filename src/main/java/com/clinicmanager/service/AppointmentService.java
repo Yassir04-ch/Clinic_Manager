@@ -1,8 +1,11 @@
-package com.clinicmanager.model;
+package com.clinicmanager.service;
 
 import com.clinicmanager.config.JPAConfig;
-import com.clinicmanager.repository.AppointmentRepository;
+import com.clinicmanager.exception.AppointmentConflictException;
+import com.clinicmanager.exception.DoctorNotAvailableException;
+import com.clinicmanager.model.Appointment;
 import com.clinicmanager.repository.jpa.JpaAppointmentRepository;
+import com.clinicmanager.repository.jpa.JpaAvailabilityRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
@@ -22,6 +25,16 @@ public class AppointmentService {
         try{
             entityManager.getTransaction().begin();
             JpaAppointmentRepository appointmentRepository = new JpaAppointmentRepository(entityManager);
+            JpaAvailabilityRepository availabilityRepository = new JpaAvailabilityRepository(entityManager);
+             boolean ckeck = appointmentRepository.checkAppointment(appointment.getDoctor().getId(),
+                     appointment.getDate(),appointment.getStartTime(),appointment.getStartTime());
+             boolean ckeckdoc = availabilityRepository.isDoctorAvailable( appointment.getDoctor().getId(), appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+             if(ckeck){
+                 throw new AppointmentConflictException("Doctor already has an appointment at this time");
+             }
+             if(!ckeckdoc){
+                 throw new DoctorNotAvailableException("Doctor already has an appointment at this time");
+             }
             appointmentRepository.save(appointment);
             entityManager.getTransaction().commit();
         }catch (Exception e){

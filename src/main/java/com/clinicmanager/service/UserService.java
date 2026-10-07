@@ -2,12 +2,18 @@ package com.clinicmanager.service;
 
 import com.clinicmanager.config.JPAConfig;
 import com.clinicmanager.exception.InvalidCredentialsException;
+import com.clinicmanager.exception.UserNotFoundException;
 import com.clinicmanager.model.User;
+import com.clinicmanager.model.enums.Role;
 import com.clinicmanager.repository.jpa.JpaUserRepository;
 import com.clinicmanager.repository.UserRepository;
 import com.clinicmanager.utils.PasswordUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class UserService {
     private final EntityManagerFactory factory;
@@ -66,6 +72,26 @@ public class UserService {
                 entityManager.getTransaction().rollback();
             }
             throw e;
+        }finally {
+            entityManager.close();
+        }
+    }
+
+    public User findById(UUID id) {
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            UserRepository repository = new JpaUserRepository(entityManager);
+            return repository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with"));
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public List<User> findByRole(Role role){
+        EntityManager entityManager = factory.createEntityManager();
+        try{
+            JpaUserRepository userRepository = new JpaUserRepository(entityManager);
+            return userRepository.findByRole(role);
         }finally {
             entityManager.close();
         }
