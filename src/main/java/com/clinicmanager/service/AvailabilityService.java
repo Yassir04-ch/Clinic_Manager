@@ -1,6 +1,7 @@
 package com.clinicmanager.service;
 
 import com.clinicmanager.config.JPAConfig;
+import com.clinicmanager.exception.AvailabilityConflictException;
 import com.clinicmanager.model.Availability;
 import com.clinicmanager.repository.AvailabilityRepository;
 import com.clinicmanager.repository.jpa.JpaAvailabilityRepository;
@@ -25,6 +26,10 @@ public class AvailabilityService {
         try {
             entityManager.getTransaction().begin();
             AvailabilityRepository repository = new JpaAvailabilityRepository(entityManager);
+            boolean exists = repository.existsAvailability(availability);
+            if(exists){
+                throw new AvailabilityConflictException("Invalide availability");
+            }
             repository.save(availability);
             entityManager.getTransaction().commit();
 

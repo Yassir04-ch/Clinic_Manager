@@ -1,5 +1,6 @@
 package com.clinicmanager.controller;
 
+import com.clinicmanager.exception.AvailabilityConflictException;
 import com.clinicmanager.model.Availability;
 import com.clinicmanager.model.Doctor;
 import com.clinicmanager.model.enums.AvailabilityStatus;
@@ -72,8 +73,11 @@ public class AvailabilityController extends HttpServlet {
             availabilityService.createAvailability(availability);
             response.sendRedirect(request.getContextPath() + "/availabilities");
 
-        } catch (Exception e) {
-
+        }catch (AvailabilityConflictException e){
+            request.setAttribute("error",e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/views/availabilities/create.jsp").forward(request, response);
+        }
+        catch (Exception e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/availabilities/create.jsp").forward(request, response);
 

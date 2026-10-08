@@ -21,5 +21,5 @@ public interface AvailabilityRepository {
 
     boolean isDoctorAvailable(UUID doctorId, LocalDate date, LocalTime startTim, LocalTime endTime);
 
-    boolean existsAvailability(UUID doctorId, DayOfWeek dayOfWeek,LocalDate validTo, LocalDate  validFrom, LocalTime startTime, LocalTime endTime);
+    boolean existsAvailability(Availability availability);
 }

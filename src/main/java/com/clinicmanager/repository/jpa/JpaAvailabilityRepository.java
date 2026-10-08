@@ -59,17 +59,16 @@ public class JpaAvailabilityRepository implements AvailabilityRepository {
     }
 
     @Override
-    public boolean existsAvailability(UUID doctorId, DayOfWeek dayOfWeek,LocalDate validTo,
-                                      LocalDate  validFrom, LocalTime startTime, LocalTime endTime){
+    public boolean existsAvailability(Availability availability){
         TypedQuery<Long> query = entityManager.createQuery(" SELECT COUNT(a.id) FROM Availability a WHERE a.doctor.id = :id " +
                         "AND a.dayOfWeek = :dayOfWeek AND a.startTime <= :endTime AND " +
-                        "a.endTime >= :startTime AND a.validFrom <= :validFrom AND a.validTo >= :validTo", Long.class);
-        query.setParameter("id", doctorId);
-        query.setParameter("dayOfWeek", dayOfWeek);
-        query.setParameter("endTime", endTime);
-        query.setParameter("startTime", startTime);
-        query.setParameter("validFrom", validFrom);
-        query.setParameter("validTo", validTo);
+                        "a.endTime > :startTime AND a.validFrom <= :validTo AND a.validTo >= :validFrom", Long.class);
+        query.setParameter("id", availability.getDoctor().getId());
+        query.setParameter("dayOfWeek", availability.getDayOfWeek());
+        query.setParameter("endTime", availability.getEndTime());
+        query.setParameter("startTime", availability.getStartTime());
+        query.setParameter("validFrom", availability.getValidFrom());
+        query.setParameter("validTo", availability.getValidTo());
         return query.getSingleResult() > 0;
     }
 
