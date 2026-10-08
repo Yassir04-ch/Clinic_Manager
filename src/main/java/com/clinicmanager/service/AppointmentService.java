@@ -28,7 +28,7 @@ public class AppointmentService {
             JpaAvailabilityRepository availabilityRepository = new JpaAvailabilityRepository(entityManager);
              boolean ckeck = appointmentRepository.checkAppointment(appointment.getDoctor().getId(),
                      appointment.getDate(),appointment.getStartTime(),appointment.getStartTime());
-             boolean ckeckdoc = availabilityRepository.isDoctorAvailable( appointment.getDoctor().getId(), appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+             boolean ckeckdoc = availabilityRepository.isDoctorAvailable( appointment.getDoctor().getId(), appointment.getDate(), appointment.getStartTime() ,appointment.getEndTime());
              if(ckeck){
                  throw new AppointmentConflictException("Doctor already has an appointment at this time");
              }

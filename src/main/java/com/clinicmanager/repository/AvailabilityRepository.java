@@ -1,6 +1,7 @@
 package com.clinicmanager.repository;
 import com.clinicmanager.model.Availability;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -18,5 +19,7 @@ public interface AvailabilityRepository {
 
     void delete(Availability availability);
 
-    boolean isDoctorAvailable(UUID doctorId, LocalDate date, LocalTime startTime, LocalTime endTime);
+    boolean isDoctorAvailable(UUID doctorId, LocalDate date, LocalTime startTim, LocalTime endTime);
+
+    boolean existsAvailability(UUID doctorId, DayOfWeek dayOfWeek,LocalDate validTo, LocalDate  validFrom, LocalTime startTime, LocalTime endTime);
 }
