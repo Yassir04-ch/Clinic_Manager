@@ -48,7 +48,7 @@ public class JpaAvailabilityRepository implements AvailabilityRepository {
 
     @Override
     public boolean isDoctorAvailable(UUID doctorId, LocalDate date, LocalTime startTime, LocalTime endTime){
-        TypedQuery<Long> query = entityManager.createQuery("SELECT a FROM Availability a WHERE a.doctor.id = :id" +
+        TypedQuery<Long> query = entityManager.createQuery("SELECT count(a.id) FROM Availability a WHERE a.doctor.id = :id" +
                 " AND a.dayOfWeek =:dayOfweek AND a.validFrom <= :start AND a.validTo >= :end",Long.class);
         query.setParameter("id",doctorId);
         query.setParameter("start",startTime);

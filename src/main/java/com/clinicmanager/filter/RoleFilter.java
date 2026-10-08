@@ -42,9 +42,8 @@ public class RoleFilter implements Filter {
             }
         }
         if ("/availabilities".equals(pathServ)) {
-            if ("/create".equals(path) || (path != null && path.startsWith("/update/")) || (path != null && path.startsWith("/delete/"))) {
-                System.out.println(user.getRole());
-                if (user != null && user.getRole() == Role.DOCTOR) {
+            if (user != null && user.getRole() == Role.DOCTOR) {
+                if (path == null || "/".equals(path) || "/create".equals(path) || (path != null && path.startsWith("/update/")) || (path != null && path.startsWith("/delete/"))) {
                     chain.doFilter(request, response);
                     return;
                 }
