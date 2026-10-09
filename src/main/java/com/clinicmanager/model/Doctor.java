@@ -28,6 +28,8 @@ public class Doctor extends User {
     @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments;
 
+    @OneToMany(mappedBy = "doctor")
+    private List<Absence> absences;
 
     public Doctor() {
     }

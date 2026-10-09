@@ -31,7 +31,7 @@ public class  DashboardController extends HttpServlet {
             request.getRequestDispatcher("/patient/dashboard.jsp"
                                         ).forward(request, response);
         } else if ("/doctor".equals(path)) {
-            request.getRequestDispatcher("/doctor/dashboard.jsp"
+            request.getRequestDispatcher("/WEB-INF/views/doctor/dashboard.jsp"
                                         ).forward(request, response);
         } else if ("/staff".equals(path)) {
             request.getRequestDispatcher("/staff/dashboard.jsp"
