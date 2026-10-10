@@ -9,6 +9,8 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 
 public class AbsenceService {
     private final EntityManagerFactory factory;
@@ -21,7 +23,7 @@ public class AbsenceService {
     public void createAbsence(Absence absence){
         validateAbsence(absence);
 
-        EntityManager entityManager = JPAConfig.getFactory().createEntityManager();
+        EntityManager entityManager = this.factory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
             JpaAbsenceRepositpry absenceRepositpry = new JpaAbsenceRepositpry(entityManager);
@@ -36,6 +38,16 @@ public class AbsenceService {
             entityManager.close();
         }
 
+    }
+
+    public List<Absence> findAbsenceByDoctor(UUID doctorId){
+            EntityManager entityManager = this.factory.createEntityManager();
+        try{
+            JpaAbsenceRepositpry absenceRepositpry = new JpaAbsenceRepositpry(entityManager);
+            return absenceRepositpry.findByDoctor(doctorId);
+        }finally {
+            entityManager.close();
+        }
     }
 
     private void validateAbsence(Absence absence) {
@@ -58,9 +70,6 @@ public class AbsenceService {
             throw new InvalidAbsenceException("La date de fin doit être égale ou postérieure à la date de début.");
         }
 
-        if (absence.getReason() != null) {
-            throw new InvalidAbsenceException("Le reason est obligatoire."
-            );
         }
-    }
 }
+
