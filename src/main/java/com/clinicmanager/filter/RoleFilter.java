@@ -26,36 +26,24 @@ import java.io.IOException;
 public class RoleFilter implements Filter {
 
     @Override
-    public void doFilter(
-            ServletRequest request,
-            ServletResponse response,
-            FilterChain chain
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain
     ) throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        HttpServletRequest httpRequest =
-                (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        HttpServletResponse httpResponse =
-                (HttpServletResponse) response;
-
-        // Récupérer la session existante sans en créer une nouvelle
         HttpSession session = httpRequest.getSession(false);
 
         User user = null;
-
         if (session != null) {
             Object userAttribute = session.getAttribute("user");
-
             if (userAttribute instanceof User) {
                 user = (User) userAttribute;
             }
         }
 
-        // Vérifier l'authentification
         if (user == null) {
-            httpResponse.sendRedirect(
-                    httpRequest.getContextPath() + "/users/login"
-            );
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/users/login");
             return;
         }
 
@@ -63,46 +51,27 @@ public class RoleFilter implements Filter {
         String path = httpRequest.getPathInfo();
 
         Role role = user.getRole();
-
-        // ADMIN
         if (role == Role.ADMIN) {
-
-            // Gestion des utilisateurs
             if ("/users/create".equals(servletPath)) {
                 chain.doFilter(request, response);
                 return;
             }
-
-            // Gestion des rendez-vous
             if ("/appointments".equals(servletPath)) {
-                if (path == null
-                        || "/".equals(path)
-                        || "/status".equals(path)) {
-
+                if (path == null || "/".equals(path) || "/status".equals(path)) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
 
-            // Gestion des départements
             if ("/departments".equals(servletPath)) {
-                if (path == null
-                        || "/".equals(path)
-                        || "/create".equals(path)
-                        || (path != null && path.startsWith("/update/"))) {
-
+                if (path == null || "/".equals(path) || "/create".equals(path) || (path != null && path.startsWith("/update/"))) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
 
-            // Gestion des spécialités
             if ("/specialties".equals(servletPath)) {
-                if (path == null
-                        || "/".equals(path)
-                        || "/create".equals(path)
-                        || (path != null && path.startsWith("/update/"))) {
-
+                if (path == null || "/".equals(path) || "/create".equals(path) || (path != null && path.startsWith("/update/"))) {
                     chain.doFilter(request, response);
                     return;
                 }
@@ -110,10 +79,7 @@ public class RoleFilter implements Filter {
 
             // Dashboard
             if ("/dashboard".equals(servletPath)) {
-                if (path == null
-                        || "/".equals(path)
-                        || "/admin".equals(path)) {
-
+                if (path == null || "/".equals(path) || "/admin".equals(path)) {
                     chain.doFilter(request, response);
                     return;
                 }
@@ -121,8 +87,7 @@ public class RoleFilter implements Filter {
         }
 
         // PATIENT
-        if (role == Role.PATIENT
-                && "/appointments".equals(servletPath)) {
+        if (role == Role.PATIENT && "/appointments".equals(servletPath)) {
 
             if ("/create".equals(path)
                     || "/patient".equals(path)) {
@@ -136,56 +101,35 @@ public class RoleFilter implements Filter {
         if (role == Role.STAFF) {
 
             if ("/appointments".equals(servletPath)) {
-                if (path == null
-                        || "/".equals(path)
-                        || "/status".equals(path)) {
-
+                if (path == null || "/".equals(path) || "/status".equals(path)) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
 
             if ("/dashboard".equals(servletPath)) {
-                if (path == null
-                        || "/".equals(path)
-                        || "/staff".equals(path)) {
-
+                if (path == null || "/".equals(path) || "/staff".equals(path)) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
         }
 
-        // DOCTOR
         if (role == Role.DOCTOR) {
-
             if ("/availabilities".equals(servletPath)) {
-                if (path == null
-                        || "/".equals(path)
-                        || "/create".equals(path)
-                        || (path != null && path.startsWith("/update/"))
-                        || (path != null && path.startsWith("/delete/"))) {
-
+                if (path == null || "/".equals(path) || "/create".equals(path) || (path != null && path.startsWith("/update/")) || (path != null && path.startsWith("/delete/"))) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
 
             if ("/dashboard".equals(servletPath)) {
-                if (path == null
-                        || "/".equals(path)
-                        || "/doctor".equals(path)) {
-
+                if (path == null || "/".equals(path) || "/doctor".equals(path)) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
         }
-
-        // Accès refusé si aucune règle ne correspond
-        httpResponse.sendError(
-                HttpServletResponse.SC_FORBIDDEN,
-                "Access denied"
-        );
+        httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Access denied");
     }
 }

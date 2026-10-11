@@ -48,11 +48,6 @@
                 <span>▣</span> Appointments
             </a>
 
-            <a href="${pageContext.request.contextPath}/absences/admin"
-               class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-100 mb-1">
-                <span>◷</span> Absence Requests
-            </a>
-
             <a href="${pageContext.request.contextPath}/departments"
                class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-100 mb-1">
                 <span>▤</span> Departments
