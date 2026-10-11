@@ -51,7 +51,7 @@
 
 
 
-      <a href="${pageContext.request.contextPath}/appointments"
+      <a href="${pageContext.request.contextPath}/appointments/patient"
          class="block px-4 py-3 rounded-lg
                   text-gray-300 hover:bg-gray-800
                   hover:text-white transition">
@@ -376,7 +376,7 @@
       </a>
 
 
-      <a href="${pageContext.request.contextPath}/appointments"
+      <a href="${pageContext.request.contextPath}/appointments/patient"
          class="bg-white border border-gray-200
                   rounded-xl p-6
                   hover:shadow-md transition">

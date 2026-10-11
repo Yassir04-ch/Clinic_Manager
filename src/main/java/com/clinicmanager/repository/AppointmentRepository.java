@@ -17,6 +17,8 @@ public interface AppointmentRepository {
 
     List<Appointment> findByDoctor(UUID doctorId);
 
+    List<Appointment> findAll();
+
     void update(Appointment appointment);
 
     void delete(Appointment appointment);

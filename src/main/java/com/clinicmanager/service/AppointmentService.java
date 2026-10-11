@@ -60,6 +60,7 @@ public class AppointmentService {
 
     }
 
+
     public void updateAppointment(Appointment appointment){
         EntityManager entityManager = this.factory.createEntityManager();
         try{
@@ -76,6 +77,18 @@ public class AppointmentService {
             entityManager.close();
         }
     }
+
+    public List<Appointment> findAll(){
+        EntityManager entityManager = this.factory.createEntityManager();
+        try{
+            JpaAppointmentRepository appointmentRepository = new JpaAppointmentRepository(entityManager);
+            List<Appointment> appointments = appointmentRepository.findAll();
+            return appointments;
+        }finally {
+            entityManager.close();
+        }
+    }
+
 
     public List<Appointment> findByPatient(UUID patientId){
         EntityManager entityManager = this.factory.createEntityManager();

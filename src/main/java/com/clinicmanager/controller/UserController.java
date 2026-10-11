@@ -26,6 +26,7 @@ public class UserController extends HttpServlet {
 
     private final UserService userService = new UserService();
     private  final SpecialtyService specialtyService = new SpecialtyService();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

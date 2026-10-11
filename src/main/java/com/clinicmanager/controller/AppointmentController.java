@@ -32,7 +32,22 @@ public class AppointmentController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String path = request.getPathInfo();
+
+        if(path == null || "/".equals(path)){
+            List<Appointment> appointments = appointmentService.findAll();
+            System.out.println("Appointments size = " + appointments.size());
+            for (Appointment appointment : appointments){
+                System.out.println(appointment.getId());
+                System.out.println(appointment.getDoctor().getFirstName());
+                System.out.println(appointment.getPatient().getFirstName());
+            }
+            request.setAttribute("appointments", appointments);
+            request.getRequestDispatcher("/WEB-INF/views/staff/appointments.jsp").forward(request, response);
+            return;
+        }
+
         HttpSession session = request.getSession();
         Patient patient = (Patient) session.getAttribute("user");
 
@@ -64,11 +79,10 @@ public class AppointmentController extends HttpServlet {
             Appointment appointment = this.appointmentService.findById(id);
             request.setAttribute("appointments", appointment);
             request.getRequestDispatcher("/WEB-INF/views/appointments/update.jsp").forward(request, response);
-        } else {
+        } else if("/patient".equals(path)){
             List<Appointment> appointment = appointmentService.findByPatient(patient.getId());
             request.setAttribute("appointments", appointment);
             request.getRequestDispatcher("/WEB-INF/views/appointments/list.jsp").forward(request, response);
-
         }
     }
 
@@ -78,10 +92,22 @@ public class AppointmentController extends HttpServlet {
 
         HttpSession session = request.getSession();
         String path = request.getPathInfo();
+
+        if ("/status".equals(path)) {
+            String appointmentId = request.getParameter("appointmentId");
+            UUID id = UUID.fromString(appointmentId);
+            Appointment appointment = appointmentService.findById(id);
+            String statusreq = request.getParameter("status");
+            AppointmentStatus status = AppointmentStatus.valueOf(statusreq);
+            appointment.setStatus(status);
+            appointmentService.updateAppointment(appointment);
+            response.sendRedirect(request.getContextPath() + "/appointments");
+            return;
+        }
+
         Patient patient = (Patient) session.getAttribute("user");
 
         if ("/create".equals(path)) {
-
             try {
                 UUID doctorId = UUID.fromString(request.getParameter("doctorId"));
                 LocalDate date = LocalDate.parse(request.getParameter("date"));

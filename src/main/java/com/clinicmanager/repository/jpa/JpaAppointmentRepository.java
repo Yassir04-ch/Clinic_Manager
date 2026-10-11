@@ -34,6 +34,12 @@ public class JpaAppointmentRepository implements AppointmentRepository {
         query.setParameter("id",patientId);
         return query.getResultList();
     }
+    @Override
+    public List<Appointment> findAll(){
+    TypedQuery<Appointment> query = entityManager.createQuery("SELECT a FROM Appointment a " +
+            "JOIN FETCH a.patient JOIN FETCH a.doctor  ORDER BY a.date DESC ",Appointment.class);
+        return query.getResultList();
+    }
 
     @Override
     public List<Appointment> findByDoctor(UUID doctorId) {
