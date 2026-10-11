@@ -141,8 +141,7 @@
 
                                         <c:choose>
 
-                                            <c:when test="${availability.status == 'AVAILABLE'}">
-
+                                            <c:when test="${availability.status.toString() == 'ACTIVE'}">
                                                 <span class="text-xs font-medium
                                                              bg-green-100 text-green-700
                                                              px-2.5 py-1 rounded-full">

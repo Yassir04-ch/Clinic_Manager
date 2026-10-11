@@ -55,10 +55,10 @@ public class JpaAppointmentRepository implements AppointmentRepository {
     @Override
     public boolean checkAppointment(UUID doctorId, LocalDate date, LocalTime startTime, LocalTime endTime) {
         TypedQuery<Long> query = entityManager.createQuery("SELECT count(a.id) FROM Appointment a WHERE a.doctor.id = :id " +
-                "AND a.date = :date AND a.startTime < :and AND a.endTime > :start",Long.class);
+                "AND a.date = :date AND a.startTime < :end AND a.endTime > :start",Long.class);
         query.setParameter("id",doctorId);
         query.setParameter("date",date);
-        query.setParameter("and",endTime);
+        query.setParameter("end",endTime);
         query.setParameter("start",startTime);
         return query.getSingleResult() > 0;
     }

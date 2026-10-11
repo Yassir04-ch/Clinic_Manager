@@ -97,7 +97,7 @@ public class AppointmentController extends HttpServlet {
                 }
 
                 Doctor doctor = (Doctor) user;
-                Appointment appointment = new Appointment(patient, doctor, date, startTime, endTime, type, reason, AppointmentStatus.PLANNED);
+                Appointment appointment = new Appointment(patient, doctor, date, startTime, endTime, type, reason);
                 appointmentService.createAppointment(appointment);
                 response.sendRedirect(request.getContextPath() + "/appointments");
 

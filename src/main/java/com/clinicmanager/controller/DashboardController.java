@@ -23,18 +23,18 @@ public class  DashboardController extends HttpServlet {
         String path = request.getPathInfo();
 
         if ("/admin".equals(path)) {
-            request.getRequestDispatcher("/admin/dashboard.jsp"
+            request.getRequestDispatcher("/WEB-INF/views/admin/dashboard.jsp"
                                         ).forward(request, response);
         } else if ("/patient".equals(path)) {
             List<User> doctors = userService.findByRole(Role.DOCTOR);
             request.setAttribute("doctors",doctors);
-            request.getRequestDispatcher("/patient/dashboard.jsp"
+            request.getRequestDispatcher("/WEB-INF/views/patient/dashboard.jsp"
                                         ).forward(request, response);
         } else if ("/doctor".equals(path)) {
             request.getRequestDispatcher("/WEB-INF/views/doctor/dashboard.jsp"
                                         ).forward(request, response);
         } else if ("/staff".equals(path)) {
-            request.getRequestDispatcher("/staff/dashboard.jsp"
+            request.getRequestDispatcher("/WEB-INF/views/staff/dashboard.jsp"
                                         ).forward(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

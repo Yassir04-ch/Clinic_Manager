@@ -2,8 +2,11 @@ package com.clinicmanager.service;
 
 import com.clinicmanager.config.JPAConfig;
 import com.clinicmanager.exception.AppointmentConflictException;
+import com.clinicmanager.exception.DoctorAbsentException;
 import com.clinicmanager.exception.DoctorNotAvailableException;
 import com.clinicmanager.model.Appointment;
+import com.clinicmanager.model.enums.AppointmentStatus;
+import com.clinicmanager.repository.jpa.JpaAbsenceRepository;
 import com.clinicmanager.repository.jpa.JpaAppointmentRepository;
 import com.clinicmanager.repository.jpa.JpaAvailabilityRepository;
 import jakarta.persistence.EntityManager;
@@ -26,15 +29,24 @@ public class AppointmentService {
             entityManager.getTransaction().begin();
             JpaAppointmentRepository appointmentRepository = new JpaAppointmentRepository(entityManager);
             JpaAvailabilityRepository availabilityRepository = new JpaAvailabilityRepository(entityManager);
-             boolean ckeck = appointmentRepository.checkAppointment(appointment.getDoctor().getId(),
-                     appointment.getDate(),appointment.getStartTime(),appointment.getStartTime());
-             boolean ckeckdoc = availabilityRepository.isDoctorAvailable( appointment.getDoctor().getId(), appointment.getDate(), appointment.getStartTime() ,appointment.getEndTime());
-             if(ckeck){
-                 throw new AppointmentConflictException("Doctor already has an appointment at this time");
-             }
-             if(!ckeckdoc){
-                 throw new DoctorNotAvailableException("Doctor already has an appointment at this time");
-             }
+            JpaAbsenceRepository absenceRepository = new JpaAbsenceRepository(entityManager);
+
+            boolean doctorAbsent = absenceRepository.isDoctorAbsent(appointment.getDoctor().getId(), appointment.getDate());
+            if (doctorAbsent) {
+                throw new DoctorAbsentException("doctor est absent à cette date.");
+            }
+
+            boolean appointmentConflict = appointmentRepository.checkAppointment(appointment.getDoctor().getId(), appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+            if (appointmentConflict) {
+                appointment.setStatus(AppointmentStatus.PENDING);
+            } else {
+                appointment.setStatus(AppointmentStatus.PLANNED);
+            }
+
+            boolean doctorAvailable = availabilityRepository.isDoctorAvailable(appointment.getDoctor().getId(), appointment.getDate(), appointment.getStartTime(), appointment.getEndTime());
+            if (!doctorAvailable) {
+                throw new DoctorNotAvailableException("doctor n'est pas disponible à cet horaire.");
+            }
             appointmentRepository.save(appointment);
             entityManager.getTransaction().commit();
         }catch (Exception e){

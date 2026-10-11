@@ -3,7 +3,7 @@ package com.clinicmanager.service;
 import com.clinicmanager.config.JPAConfig;
 import com.clinicmanager.exception.InvalidAbsenceException;
 import com.clinicmanager.model.Absence;
-import com.clinicmanager.repository.jpa.JpaAbsenceRepositpry;
+import com.clinicmanager.repository.jpa.JpaAbsenceRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -26,7 +26,7 @@ public class AbsenceService {
         EntityManager entityManager = this.factory.createEntityManager();
         try{
             entityManager.getTransaction().begin();
-            JpaAbsenceRepositpry absenceRepositpry = new JpaAbsenceRepositpry(entityManager);
+            JpaAbsenceRepository absenceRepositpry = new JpaAbsenceRepository(entityManager);
             absenceRepositpry.save(absence);
             entityManager.getTransaction().commit();
         } catch (RuntimeException e) {
@@ -43,8 +43,47 @@ public class AbsenceService {
     public List<Absence> findAbsenceByDoctor(UUID doctorId){
             EntityManager entityManager = this.factory.createEntityManager();
         try{
-            JpaAbsenceRepositpry absenceRepositpry = new JpaAbsenceRepositpry(entityManager);
+            JpaAbsenceRepository absenceRepositpry = new JpaAbsenceRepository(entityManager);
             return absenceRepositpry.findByDoctor(doctorId);
+        }finally {
+            entityManager.close();
+        }
+    }
+
+    public List<Absence> findAll(){
+        EntityManager entityManager = this.factory.createEntityManager();
+        try{
+            JpaAbsenceRepository absenceRepositpry = new JpaAbsenceRepository(entityManager);
+            return absenceRepositpry.findAll();
+        }finally {
+            entityManager.close();
+        }
+    }
+
+    public void update(Absence absence){
+        EntityManager entityManager = this.factory.createEntityManager();
+        try{
+            entityManager.getTransaction().begin();
+            JpaAbsenceRepository absenceRepository = new JpaAbsenceRepository(entityManager);
+            absenceRepository.update(absence);
+            entityManager.getTransaction().commit();
+
+        }catch (Exception e){
+            if(entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().rollback();
+            }
+            throw  e;
+        }finally
+         {
+            entityManager.close();
+        }
+    }
+
+    public Absence find(UUID id){
+        EntityManager entityManager = this.factory.createEntityManager();
+        try{
+            JpaAbsenceRepository absenceRepository = new JpaAbsenceRepository(entityManager);
+            return absenceRepository.find(id);
         }finally {
             entityManager.close();
         }

@@ -47,7 +47,7 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(Patient patient, Doctor doctor, LocalDate date, LocalTime startTime, LocalTime endTime, AppointmentType type, String reason, AppointmentStatus status)
+    public Appointment(Patient patient, Doctor doctor, LocalDate date, LocalTime startTime, LocalTime endTime, AppointmentType type, String reason)
     {
         this.patient = patient;
         this.doctor = doctor;
@@ -56,7 +56,6 @@ public class Appointment {
         this.endTime = endTime;
         this.type = type;
         this.reason = reason;
-        this.status = status;
     }
 
     public UUID getId() {
