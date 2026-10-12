@@ -40,6 +40,13 @@ public class AvailabilityController extends HttpServlet {
         }
         UUID doctorId = doctor.getId();
         List<Availability> availabilities =   availabilityService.findByDoctor(doctorId);
+        for (Availability availability : availabilities){
+            System.out.println(availability.getDayOfWeek());
+            System.out.println(availability.getEndTime());
+            System.out.println(availability.getStatus());
+            System.out.println(availability.getValidFrom());
+            System.out.println(availability.getValidTo());
+        }
         request.setAttribute("availabilities", availabilities);
         request.setAttribute("doctorId", doctorId);
         request.getRequestDispatcher("/WEB-INF/views/availabilities/list.jsp").forward(request, response);

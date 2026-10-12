@@ -48,15 +48,6 @@
                 <span>▣</span> Appointments
             </a>
 
-            <a href="${pageContext.request.contextPath}/departments"
-               class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-100 mb-1">
-                <span>▤</span> Departments
-            </a>
-
-            <a href="${pageContext.request.contextPath}/specialties"
-               class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 hover:bg-slate-100 mb-1">
-                <span>✚</span> Specialties
-            </a>
 
             <p class="px-3 mt-7 mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
                 Account
@@ -119,50 +110,6 @@
                 </p>
             </section>
 
-            <!-- Quick stats -->
-            <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
-
-                <div class="bg-white rounded-2xl border border-slate-200 p-5">
-                    <div class="flex items-center justify-between">
-                        <p class="text-sm text-slate-500 font-medium">Appointments</p>
-                        <span class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl">▣</span>
-                    </div>
-                    <p class="mt-5 text-2xl font-bold text-slate-900">Manage</p>
-                    <p class="mt-1 text-sm text-slate-500">Follow appointment records</p>
-                    <a href="${pageContext.request.contextPath}/appointments"
-                       class="inline-block mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800">
-                        Open appointments →
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl border border-slate-200 p-5">
-                    <div class="flex items-center justify-between">
-                        <p class="text-sm text-slate-500 font-medium">Absence Requests</p>
-                        <span class="w-11 h-11 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-xl">◷</span>
-                    </div>
-                    <p class="mt-5 text-2xl font-bold text-slate-900">Review</p>
-                    <p class="mt-1 text-sm text-slate-500">Review requests submitted by doctors</p>
-                    <a href="${pageContext.request.contextPath}/absences/admin"
-                       class="inline-block mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800">
-                        View requests →
-                    </a>
-                </div>
-
-                <div class="bg-white rounded-2xl border border-slate-200 p-5">
-                    <div class="flex items-center justify-between">
-                        <p class="text-sm text-slate-500 font-medium">Departments</p>
-                        <span class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-xl">▤</span>
-                    </div>
-                    <p class="mt-5 text-2xl font-bold text-slate-900">Explore</p>
-                    <p class="mt-1 text-sm text-slate-500">Consult clinic departments</p>
-                    <a href="${pageContext.request.contextPath}/departments"
-                       class="inline-block mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800">
-                        View departments →
-                    </a>
-                </div>
-
-            </section>
-
             <!-- Quick actions -->
             <section class="bg-white border border-slate-200 rounded-2xl p-6">
                 <div class="mb-5">
@@ -177,13 +124,6 @@
                         <span class="text-2xl">📅</span>
                         <h3 class="mt-3 font-semibold text-slate-900">Appointment Management</h3>
                         <p class="mt-1 text-sm text-slate-500">Access appointment records and schedules.</p>
-                    </a>
-
-                    <a href="${pageContext.request.contextPath}/absences/admin"
-                       class="border border-slate-200 rounded-xl p-5 hover:border-blue-300 hover:bg-blue-50/50 transition">
-                        <span class="text-2xl">📋</span>
-                        <h3 class="mt-3 font-semibold text-slate-900">Absence Requests</h3>
-                        <p class="mt-1 text-sm text-slate-500">Review doctors' absence requests.</p>
                     </a>
 
                     <a href="${pageContext.request.contextPath}/profile"

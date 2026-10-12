@@ -86,29 +86,34 @@ public class RoleFilter implements Filter {
             }
         }
 
-        // PATIENT
-        if (role == Role.PATIENT && "/appointments".equals(servletPath)) {
-
-            if ("/create".equals(path)
-                    || "/patient".equals(path)) {
-
-                chain.doFilter(request, response);
-                return;
-            }
-        }
-
         // STAFF
         if (role == Role.STAFF) {
 
-            if ("/appointments".equals(servletPath)) {
-                if (path == null || "/".equals(path) || "/status".equals(path)) {
+            if ("/dashboard".equals(servletPath)) {
+                if ("/staff".equals(path)) {
                     chain.doFilter(request, response);
                     return;
                 }
             }
 
+            if("/appointments".equals(servletPath)){
+                chain.doFilter(request, response);
+                return;
+            }
+        }
+
+        // PATIENT
+        if (role == Role.PATIENT) {
+
             if ("/dashboard".equals(servletPath)) {
-                if (path == null || "/".equals(path) || "/staff".equals(path)) {
+                if (path == null || "/".equals(path) || "/patient".equals(path)) {
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
+
+            if ("/appointments".equals(servletPath)) {
+                if ("/create".equals(path) || "/patient".equals(path)) {
                     chain.doFilter(request, response);
                     return;
                 }
@@ -118,6 +123,13 @@ public class RoleFilter implements Filter {
         if (role == Role.DOCTOR) {
             if ("/availabilities".equals(servletPath)) {
                 if (path == null || "/".equals(path) || "/create".equals(path) || (path != null && path.startsWith("/update/")) || (path != null && path.startsWith("/delete/"))) {
+                    chain.doFilter(request, response);
+                    return;
+                }
+            }
+
+            if ("/appointments".equals(servletPath)) {
+                if ("/doctor".equals(path)) {
                     chain.doFilter(request, response);
                     return;
                 }

@@ -53,7 +53,7 @@
             </a>
 
 
-            <a href="${pageContext.request.contextPath}/appointments"
+            <a href="${pageContext.request.contextPath}/appointments/doctor"
                class="flex items-center gap-3 px-4 py-3 rounded-lg
                       text-gray-600 hover:bg-gray-100">
 
@@ -334,7 +334,7 @@
 
                         </div>
 
-                        <a href="${pageContext.request.contextPath}/appointments"
+                        <a href="${pageContext.request.contextPath}/appointments/doctor"
                            class="text-sm text-blue-600 hover:text-blue-700 font-medium">
 
                             View all
@@ -420,7 +420,7 @@
 
                         <!-- Appointments -->
 
-                        <a href="${pageContext.request.contextPath}/appointments"
+                        <a href="${pageContext.request.contextPath}/appointments/doctor"
                            class="flex items-center gap-4 p-4 rounded-xl
                                   bg-green-50 hover:bg-green-100 transition">
 

@@ -38,18 +38,13 @@ public class AppointmentController extends HttpServlet {
         if(path == null || "/".equals(path)){
             List<Appointment> appointments = appointmentService.findAll();
             System.out.println("Appointments size = " + appointments.size());
-            for (Appointment appointment : appointments){
-                System.out.println(appointment.getId());
-                System.out.println(appointment.getDoctor().getFirstName());
-                System.out.println(appointment.getPatient().getFirstName());
-            }
             request.setAttribute("appointments", appointments);
             request.getRequestDispatcher("/WEB-INF/views/staff/appointments.jsp").forward(request, response);
             return;
         }
 
         HttpSession session = request.getSession();
-        Patient patient = (Patient) session.getAttribute("user");
+        User userlogin = (User) session.getAttribute("user");
 
         if ("/create".equals(path)) {
             String doctorId = request.getParameter("doctorId");
@@ -80,9 +75,18 @@ public class AppointmentController extends HttpServlet {
             request.setAttribute("appointments", appointment);
             request.getRequestDispatcher("/WEB-INF/views/appointments/update.jsp").forward(request, response);
         } else if("/patient".equals(path)){
-            List<Appointment> appointment = appointmentService.findByPatient(patient.getId());
+            List<Appointment> appointment = appointmentService.findByPatient(userlogin.getId());
             request.setAttribute("appointments", appointment);
             request.getRequestDispatcher("/WEB-INF/views/appointments/list.jsp").forward(request, response);
+        } else if ("/doctor".equals(path)) {
+            List<Appointment> appointments = appointmentService.findByDoctor(userlogin.getId());
+            for (Appointment appointment : appointments){
+                System.out.println(appointment.getId());
+                System.out.println(appointment.getDate());
+                System.out.println(appointment.getStatus());
+            }
+            request.setAttribute("appointments",appointments);
+            request.getRequestDispatcher("/WEB-INF/views/doctor/appointments.jsp").forward(request,response);
         }
     }
 
@@ -125,7 +129,7 @@ public class AppointmentController extends HttpServlet {
                 Doctor doctor = (Doctor) user;
                 Appointment appointment = new Appointment(patient, doctor, date, startTime, endTime, type, reason);
                 appointmentService.createAppointment(appointment);
-                response.sendRedirect(request.getContextPath() + "/appointments");
+                response.sendRedirect(request.getContextPath() + "/appointments/patient");
 
             } catch (AppointmentConflictException e) {
                 request.setAttribute("error", e.getMessage());
