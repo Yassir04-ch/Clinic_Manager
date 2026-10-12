@@ -138,7 +138,6 @@ public class AppointmentController extends HttpServlet {
             }   catch (UserNotFoundException e) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, e.getMessage());
           }
-
         }
     }
 }
